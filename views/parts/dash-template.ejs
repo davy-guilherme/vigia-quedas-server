@@ -1,0 +1,238 @@
+<!-- Navbar Mobile -->
+<style>
+    /* Sidebar Desktop */
+
+    .sidebar {
+
+        width: 280px;
+        min-height: 100vh;
+
+        background:
+            linear-gradient(
+                180deg,
+                #0d6efd,
+                #0a58ca
+            );
+
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        padding: 25px;
+
+        color: white;
+    }
+
+    .sidebar-brand {
+
+        font-size: 1.5rem;
+        font-weight: 700;
+
+        margin-bottom: 40px;
+    }
+
+    .sidebar-link {
+
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        padding: 14px 16px;
+
+        border-radius: 14px;
+
+        color: rgba(255,255,255,0.9);
+        text-decoration: none;
+
+        margin-bottom: 10px;
+
+        transition: 0.2s;
+    }
+
+    .sidebar-link:hover,
+    .sidebar-link.active {
+
+        background: rgba(255,255,255,0.15);
+
+        color: white;
+    }
+
+    /* Conteúdo */
+
+    .main-content {
+
+        margin-left: 280px;
+        padding: 30px;
+    }
+
+    /* Topbar */
+
+    .topbar {
+
+        background: white;
+
+        border-radius: 20px;
+
+        padding: 20px 25px;
+
+        margin-bottom: 30px;
+
+        box-shadow:
+            0 5px 20px rgba(0,0,0,0.04);
+    }
+
+    /* Responsivo */
+
+    @media(max-width: 991px) {
+
+        .main-content {
+
+            margin-left: 0;
+            padding: 20px;
+        }
+
+    }
+    
+</style>
+
+<nav class="navbar navbar-dark bg-primary d-lg-none shadow-sm">
+
+    <div class="container-fluid">
+
+        <a class="navbar-brand fw-bold" href="#">
+            <i class="bi bi-shield-check"></i>
+            Vigia Quedas
+        </a>
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#mobileMenu"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+    </div>
+
+</nav>
+
+<!-- Sidebar Desktop -->
+<aside class="sidebar d-none d-lg-block">
+
+    <div class="sidebar-brand">
+
+        <i class="bi bi-shield-check"></i>
+        Vigia Quedas
+
+    </div>
+
+    <nav>
+
+        <a href="/dashboard" class="sidebar-link <%= currentUrl === '/dashboard' ? 'active' : '' %>">
+            <i class="bi bi-speedometer2"></i>
+            Dashboard
+        </a>
+
+        <a href="/dashboard/devices" class="sidebar-link <%= currentUrl === '/dashboard/devices' ? 'active' : '' %>">
+            <i class="bi bi-cpu"></i>
+            Dispositivos
+        </a>
+
+        <a href="#" class="sidebar-link">
+            <i class="bi bi-bell"></i>
+            Alertas
+        </a>
+
+        <a href="#" class="sidebar-link">
+            <i class="bi bi-people"></i>
+            Contatos
+        </a>
+
+        <a href="#" class="sidebar-link">
+            <i class="bi bi-person"></i>
+            Perfil
+        </a>
+
+        <a href="/" class="sidebar-link">
+            <i class="bi bi-house"></i>
+            Página Inicial
+        </a>
+
+        <a href="/logout" class="sidebar-link">
+            <i class="bi bi-box-arrow-right"></i>
+            Sair
+        </a>
+
+    </nav>
+
+</aside>
+
+<!-- Offcanvas Mobile -->
+<div
+    class="offcanvas offcanvas-start text-bg-primary"
+    tabindex="-1"
+    id="mobileMenu"
+>
+
+    <div class="offcanvas-header">
+
+        <h5 class="offcanvas-title fw-bold">
+
+            <i class="bi bi-shield-check"></i>
+            Vigia Quedas
+
+        </h5>
+
+        <button
+            type="button"
+            class="btn-close btn-close-white"
+            data-bs-dismiss="offcanvas"
+        ></button>
+
+    </div>
+
+    <div class="offcanvas-body">
+
+        <nav>
+
+            <a href="#" class="sidebar-link active">
+                <i class="bi bi-speedometer2"></i>
+                Dashboard
+            </a>
+
+            <a href="#" class="sidebar-link">
+                <i class="bi bi-cpu"></i>
+                Dispositivos
+            </a>
+
+            <a href="#" class="sidebar-link">
+                <i class="bi bi-bell"></i>
+                Alertas
+            </a>
+
+            <a href="#" class="sidebar-link">
+                <i class="bi bi-people"></i>
+                Contatos
+            </a>
+
+            <a href="#" class="sidebar-link">
+                <i class="bi bi-person"></i>
+                Perfil
+            </a>
+
+            <a href="/" class="sidebar-link">
+                <i class="bi bi-house"></i>
+                Página Inicial
+            </a>
+
+            <a href="/logout" class="sidebar-link">
+                <i class="bi bi-box-arrow-right"></i>
+                Sair
+            </a>
+
+        </nav>
+
+    </div>
+
+</div>

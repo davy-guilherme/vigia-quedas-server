@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <%- include('../parts/head') %>
+    <style>
+
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .hero {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0d6efd,
+                    #0a58ca
+                );
+
+            color: white;
+            padding: 120px 0 90px 0;
+        }
+
+        .hero h1 {
+
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        .section-card {
+
+            border: none;
+            border-radius: 20px;
+            transition: 0.2s ease;
+        }
+
+        .section-card:hover {
+
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .icon-box {
+
+            width: 80px;
+            height: 80px;
+
+            background: rgba(13,110,253,0.1);
+
+            border-radius: 20px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            margin-bottom: 20px;
+
+            font-size: 2rem;
+            color: #0d6efd;
+        }
+
+        .team-card {
+
+            border: none;
+            border-radius: 20px;
+        }
+
+        .team-avatar {
+
+            width: 90px;
+            height: 90px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0d6efd,
+                    #0a58ca
+                );
+
+            color: white;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 2rem;
+
+            margin: 0 auto 20px auto;
+        }
+
+        footer {
+
+            background-color: #212529;
+            color: #adb5bd;
+        }
+
+    </style>
+
+</head>
+<body>
+    <%- include('../parts/navbar') %>
+    <!-- Hero -->
+    <section class="hero">
+
+        <div class="container text-center">
+
+            <h1>
+                Sobre o Vigia Quedas
+            </h1>
+
+            <p class="lead mt-4 col-lg-8 mx-auto">
+                Um sistema desenvolvido para aumentar a segurança,
+                agilizar o atendimento em emergências e ajudar no
+                monitoramento inteligente de pessoas em situação de risco.
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- Missão -->
+    <section class="py-5">
+
+        <div class="container">
+
+            <div class="row g-4">
+
+                <div class="col-lg-4">
+
+                    <div class="card section-card h-100 shadow-sm">
+
+                        <div class="card-body p-4">
+
+                            <div class="icon-box">
+                                <i class="bi bi-bullseye"></i>
+                            </div>
+
+                            <h3 class="fw-bold">
+                                Missão
+                            </h3>
+
+                            <p class="text-muted">
+                                Criar soluções acessíveis para detecção
+                                automática de quedas e comunicação rápida
+                                com contatos de emergência.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4">
+
+                    <div class="card section-card h-100 shadow-sm">
+
+                        <div class="card-body p-4">
+
+                            <div class="icon-box">
+                                <i class="bi bi-eye"></i>
+                            </div>
+
+                            <h3 class="fw-bold">
+                                Visão
+                            </h3>
+
+                            <p class="text-muted">
+                                Tornar o monitoramento preventivo mais
+                                inteligente, simples e acessível para
+                                famílias, cuidadores e instituições.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4">
+
+                    <div class="card section-card h-100 shadow-sm">
+
+                        <div class="card-body p-4">
+
+                            <div class="icon-box">
+                                <i class="bi bi-heart-pulse"></i>
+                            </div>
+
+                            <h3 class="fw-bold">
+                                Objetivo
+                            </h3>
+
+                            <p class="text-muted">
+                                Reduzir o tempo de resposta em situações
+                                de emergência através de dispositivos
+                                inteligentes conectados em tempo real.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Sobre o Sistema -->
+    <section class="py-5 bg-white">
+
+        <div class="container">
+
+            <div class="row align-items-center g-5">
+
+                <div class="col-lg-6">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=1200&auto=format&fit=crop"
+                        class="img-fluid rounded-4 shadow"
+                        alt="Tecnologia e monitoramento"
+                    >
+
+                </div>
+
+                <div class="col-lg-6">
+
+                    <h2 class="fw-bold mb-4">
+                        Tecnologia focada em segurança
+                    </h2>
+
+                    <p class="text-muted mb-4">
+                        O Vigia Quedas utiliza dispositivos inteligentes
+                        capazes de identificar padrões de movimento,
+                        detectar possíveis quedas e enviar notificações
+                        automáticas para contatos cadastrados.
+                    </p>
+
+                    <p class="text-muted mb-4">
+                        O sistema foi pensado para funcionar em tempo real,
+                        utilizando comunicação eficiente entre dispositivos
+                        e servidor através do protocolo MQTT.
+                    </p>
+
+                    <div class="d-flex gap-3 flex-wrap">
+
+                        <div class="badge bg-primary p-3">
+                            <i class="bi bi-wifi"></i>
+                            MQTT
+                        </div>
+
+                        <div class="badge bg-success p-3">
+                            <i class="bi bi-bell"></i>
+                            Alertas
+                        </div>
+
+                        <div class="badge bg-dark p-3">
+                            <i class="bi bi-lightning"></i>
+                            Tempo Real
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Desenvolvedor -->
+    <section class="py-5">
+
+        <div class="container">
+
+            <div class="text-center mb-5">
+
+                <h2 class="fw-bold">
+                    Desenvolvimento
+                </h2>
+
+                <p class="text-muted">
+                    Projeto desenvolvido com foco em IoT,
+                    monitoramento e sistemas em tempo real.
+                </p>
+
+            </div>
+
+            <div class="row justify-content-center">
+
+                <div class="col-lg-4 mt-2 mb-2">
+                    <div class="card team-card shadow-sm text-center">
+                        <div class="card-body p-5">
+                            <div class="team-avatar">
+                                <i class="bi bi-person"></i>
+                            </div>
+                            <h4 class="fw-bold">
+                                Davy Batista
+                            </h4>
+                            <p class="text-primary mb-3">
+                                Desenvolvimento Full Stack & IoT
+                            </p>
+                            <p class="text-muted">
+                                Desenvolvimento do sistema web,
+                                comunicação MQTT, integração com ESP32
+                                e monitoramento inteligente de quedas.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 mt-2 mb-2">
+                    <div class="card team-card shadow-sm text-center">
+                        <div class="card-body p-5">
+                            <div class="team-avatar">
+                                <i class="bi bi-person"></i>
+                            </div>
+                            <h4 class="fw-bold">
+                                Eder
+                            </h4>
+                            <p class="text-primary mb-3">
+                                Desenvolvimento Full Stack & IoT
+                            </p>
+                            <p class="text-muted">
+                                Desenvolvimento do sistema web,
+                                comunicação MQTT, integração com ESP32
+                                e monitoramento inteligente de quedas.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 mt-2 mb-2">
+                    <div class="card team-card shadow-sm text-center">
+                        <div class="card-body p-5">
+                            <div class="team-avatar">
+                                <i class="bi bi-person"></i>
+                            </div>
+                            <h4 class="fw-bold">
+                                Henrique
+                            </h4>
+                            <p class="text-primary mb-3">
+                                Desenvolvimento Full Stack & IoT
+                            </p>
+                            <p class="text-muted">
+                                Desenvolvimento do sistema web,
+                                comunicação MQTT, integração com ESP32
+                                e monitoramento inteligente de quedas.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- CTA -->
+    <section class="py-5 bg-light">
+
+        <div class="container text-center">
+
+            <h2 class="fw-bold">
+                Faça parte do Vigia Quedas
+            </h2>
+
+            <p class="text-muted mt-3 mb-4">
+                Crie sua conta e comece a monitorar dispositivos
+                e contatos de emergência em tempo real.
+            </p>
+
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+
+                <a
+                    href="/auth/register"
+                    class="btn btn-primary btn-lg px-5"
+                >
+                    Criar Conta
+                </a>
+
+                <a
+                    href="/auth/login"
+                    class="btn btn-outline-primary btn-lg px-5"
+                >
+                    Entrar
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <%-include('../parts/foot') %>
+</body>
+</html>

@@ -1,0 +1,8 @@
+/node_modules
+
+# Metadados do macOS
+**/.DS_Store
+
+# Bootstrap
+/public/bootstrap-5.3.7-dist
+/public/bootstrap-icons-1.13.1

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <title>Login - Vigia Quedas</title>
+  <%- include('../parts/head') %>
+  <style>
+    body {
+      min-height: 100vh;
+      background:
+        linear-gradient(
+          135deg,
+          #0d6efd,
+          #0a58ca
+        );
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      padding: 20px;
+      padding-top: 100px;
+    }
+
+    /* Navbar transparente */
+    .navbar {
+
+      background: transparent !important;
+      backdrop-filter: blur(6px);
+    }
+
+    .navbar-brand,
+    .nav-link {
+
+      color: white !important;
+    }
+
+    .nav-link {
+
+      opacity: 0.85;
+      transition: 0.2s;
+    }
+
+    .nav-link:hover {
+
+      opacity: 1;
+    }
+
+    .navbar-toggler {
+
+      border-color: rgba(255,255,255,0.25);
+    }
+
+    .navbar-toggler-icon {
+
+      filter: brightness(100);
+    }
+
+    /* Login */
+
+    .login-wrapper {
+
+      width: 100%;
+      max-width: 430px;
+    }
+
+    .brand {
+
+      text-align: center;
+      color: white;
+      margin-bottom: 25px;
+    }
+
+    .brand h1 {
+
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .brand p {
+
+      color: rgba(255,255,255,0.85);
+      margin: 0;
+    }
+
+    .brand-icon {
+
+      font-size: 3.5rem;
+    }
+
+    .login-card {
+
+      border: none;
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .card-body {
+
+      padding: 40px;
+    }
+
+    .login-title {
+
+      font-weight: 700;
+      color: #212529;
+    }
+
+    /* Inputs */
+
+    .form-control {
+
+      border-radius: 12px;
+      padding: 12px 14px;
+      border: 1px solid #dee2e6;
+    }
+
+    .form-control:focus {
+
+      box-shadow: 0 0 0 0.2rem rgba(13,110,253,0.15);
+      border-color: #0d6efd;
+    }
+
+    .input-group-text {
+
+      border-radius: 12px 0 0 12px;
+      background: white;
+    }
+
+    /* Botões */
+
+    .btn-primary {
+
+      border-radius: 12px;
+      padding: 12px;
+      font-weight: 600;
+    }
+
+    /* Rodapé */
+
+    .footer-text {
+
+      text-align: center;
+      margin-top: 20px;
+      color: rgba(255,255,255,0.8);
+      font-size: 0.9rem;
+    }
+
+    #error {
+
+      min-height: 24px;
+    }
+
+  </style>
+
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+
+    <div class="container">
+
+      <a class="navbar-brand fw-bold" href="/">
+        <i class="bi bi-shield-check"></i>
+        Vigia Quedas
+      </a>
+
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#menu"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="menu">
+
+        <ul class="navbar-nav ms-auto">
+
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              Início
+            </a>
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </nav>
+
+  <!-- Conteúdo -->
+  <div class="login-wrapper">
+
+    <!-- Marca -->
+    <div class="brand">
+
+      <div class="brand-icon">
+        <i class="bi bi-shield-check"></i>
+      </div>
+
+      <h1>Vigia Quedas</h1>
+
+      <p>
+        Sistema inteligente de detecção e notificação de quedas
+      </p>
+
+    </div>
+
+    <!-- Card -->
+    <div class="card shadow-lg login-card">
+
+      <div class="card-body">
+
+        <h3 class="text-center mb-4 login-title">
+          Entrar
+        </h3>
+
+        <form id="loginForm" method="post" action="/auth/login">
+
+          <!-- Email -->
+          <div class="mb-3">
+
+            <label for="email" class="form-label">
+              E-mail
+            </label>
+
+            <div class="input-group">
+
+              <span class="input-group-text">
+                <i class="bi bi-envelope"></i>
+              </span>
+
+              <input
+                type="email"
+                id="email"
+                class="form-control"
+                placeholder="Digite seu e-mail"
+                required
+              >
+
+            </div>
+
+          </div>
+
+          <!-- Senha -->
+          <div class="mb-3">
+
+            <label for="senha" class="form-label">
+              Senha
+            </label>
+
+            <div class="input-group">
+
+              <span class="input-group-text">
+                <i class="bi bi-lock"></i>
+              </span>
+
+              <input
+                type="password"
+                id="senha"
+                class="form-control"
+                placeholder="Digite sua senha"
+                required
+              >
+
+            </div>
+
+          </div>
+
+          <!-- Botão -->
+          <button
+            class="btn btn-primary w-100 mt-3"
+            type="submit"
+          >
+            Entrar
+          </button>
+
+          <!-- Cadastro -->
+          <div class="text-center mt-4">
+
+            <span class="text-muted">
+              Ainda não possui uma conta?
+            </span>
+
+            <a
+              href="/auth/register"
+              class="text-decoration-none fw-semibold"
+            >
+              Criar conta
+            </a>
+
+          </div>
+
+          <!-- Erro -->
+          <div
+            id="error"
+            class="text-danger mt-3 text-center"
+          ></div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+    <!-- Rodapé -->
+    <div class="footer-text">
+      © 2026 Vigia Quedas
+    </div>
+
+  </div>
+
+  <!-- Bootstrap -->
+  <script src="../../bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+
+    const form = document.getElementById("loginForm");
+    const error = document.getElementById("error");
+
+    form.addEventListener("submit", async (e) => {
+
+      e.preventDefault();
+
+      error.textContent = "";
+
+      const email = document.getElementById("email").value;
+      const senha = document.getElementById("senha").value;
+
+      try {
+
+        const resp = await fetch("/auth/login", {
+
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+            email,
+            senha
+          })
+
+        });
+
+        const data = await resp.json();
+
+        console.log(data);
+
+        if (!resp.ok) {
+
+          error.textContent =
+            data.erro || "Erro ao fazer login.";
+
+          return;
+        }
+
+        window.location.href = "/dashboard";
+
+      } catch (err) {
+
+        console.error(err);
+
+        error.textContent =
+          "Erro ao conectar com o servidor.";
+
+      }
+
+    });
+
+  </script>
+
+  <!-- <script>
+
+    
+    const form = document.getElementById("loginForm");
+    const error = document.getElementById("error");
+
+    form.addEventListener("submit", async (e) => {
+
+      e.preventDefault();
+
+      error.textContent = "";
+
+      const email = document.getElementById("email").value;
+      const senha = document.getElementById("senha").value;
+
+      console.log('email: ' + email);
+      console.log('senha: ' + senha);
+
+
+
+      try {
+
+        const resp = await fetch("/auth/login", {
+
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+            email,
+            senha
+          })
+
+        });
+        
+        const data = await resp.json();
+
+        if (!resp.ok) {
+
+          error.textContent =
+            data.erro || "Erro ao fazer login.";
+
+          return;
+        }
+
+        window.location.href = "/calls/admin";
+
+      } catch (err) {
+
+        error.textContent =
+          "Erro ao conectar com o servidor.";
+
+      }
+
+    });
+
+  </script> -->
+
+</body>
+</html>
