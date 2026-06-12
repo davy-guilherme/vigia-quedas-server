@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("path");
-const authenticateJWT = require("../middlewares/auth");
+const { authenticateJWT } = require("../middlewares/auth");
 
 const router = express.Router();
 

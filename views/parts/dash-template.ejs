@@ -159,10 +159,12 @@
             Página Inicial
         </a>
 
-        <a href="/logout" class="sidebar-link">
-            <i class="bi bi-box-arrow-right"></i>
-            Sair
-        </a>
+        <form action="/auth/logout" method="POST">
+            <button type="submit" class="sidebar-link border-0 bg-transparent w-100 text-start">
+                <i class="bi bi-box-arrow-right"></i>
+                Sair
+            </button>
+        </form>
 
     </nav>
 

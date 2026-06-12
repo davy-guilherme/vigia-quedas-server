@@ -1,15 +1,18 @@
 const mqtt = require('mqtt');
+const dotenv = require('dotenv').config();
 
 const { handleFall } = require('./handlers/fallHandler');
 
 function initMQTT () {
+    console.log(process.env.MQTT_HOST);
     // const client = mqtt.connect('mqtt://localhost:1883');
-    const client = mqtt.connect('mqtt://52.202.93.46:1883');
+    // const client = mqtt.connect('mqtt://52.202.93.46:1883');
+    const client = mqtt.connect(process.env.MQTT_HOST);
 
     client.on('connect', () => {
         console.log('MQTT conectado');
-        // client.subscribe('vigiaquedas/device/{device_id}/fall');
         client.subscribe('vigiaquedas/device/+/fall');
+        console.log('Subscrito no tópico: vigiaquedas/device/+/fall')
     });
 
     client.on('message', async (topic, message) => {
@@ -32,19 +35,19 @@ function initMQTT () {
     });
 
     client.on('reconnect', () => {
-        console.log('Tentando reconectar...');
+        console.log('MQTT: Tentando reconectar...');
     });
 
     client.on('close', () => {
-        console.log('Conexão fechada.');
+        console.log('MQTT: Conexão fechada.');
     });
 
     client.on('offline', () => {
-        console.log('Cliente está offline.');
+        console.log('MQTT: Cliente está offline.');
     });
 
     client.on('error', (err) => {
-        console.error('Erro de conexão:', err.message);
+        console.error('MQTT: Erro de conexão:', err.message);
     });
 }
 
