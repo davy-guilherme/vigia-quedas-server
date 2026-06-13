@@ -31,6 +31,36 @@ class Event {
         return rows;
     }
 
+    static async findWithFilters(userId, filters = {}) {
+        // Base da query filtrando sempre pelo usuário logado
+        let sql = `SELECT * FROM events WHERE user_id = ?`;
+        const queryParams = [userId];
+
+        // Se o filtro 'tipo' existir, adiciona à query
+        if (filters.tipo) {
+            sql += ` AND tipo = ?`;
+            queryParams.push(filters.tipo);
+        }
+
+        // Se o filtro 'status' existir, adiciona à query
+        if (filters.status) {
+            sql += ` AND status = ?`;
+            queryParams.push(filters.status);
+        }
+
+        // NOVO: Se o filtro 'device_id' existir, adiciona à query
+        if (filters.device_id) {
+            sql += ` AND device_id = ?`;
+            queryParams.push(filters.device_id);
+        }
+
+        // Mantém a ordenação dos alertas mais recentes primeiro
+        sql += ` ORDER BY created_at DESC`;
+
+        const [rows] = await db.execute(sql, queryParams);
+        return rows;
+    }
+
     static async findByDevice(deviceId) {
 
         const [rows] = await db.execute(

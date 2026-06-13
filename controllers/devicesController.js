@@ -2,10 +2,11 @@ const Device = require('../models/Device');
 
 async function index(req, res) {
 
-    const devices =
-        await Device.findByUser(req.user.id);
+    const devices = await Device.findByUser(req.user.id);
 
-    res.render('devices', {
+    res.render('device/home', {
         devices
     });
 }
+
+module.exports = { index };
