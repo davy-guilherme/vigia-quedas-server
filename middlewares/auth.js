@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('../database/connection');
+const User = require('../models/User');
+const Device = require('../models/Device');
+const Alert = require('../models/Event');
 
 const dotenv = require('dotenv').config();
 
@@ -29,61 +32,66 @@ async function authenticateJWT (req, res, next) {
             process.env.JWT_SECRET
         );
 
-        const [rows] = await db.execute(
-            `
-            SELECT
-                id,
-                nome,
-                email
-            FROM users
-            WHERE id = ?
-            `,
-            [payload.id]
-        );
+        // const [rows] = await db.execute(
+        //     `
+        //     SELECT
+        //         id,
+        //         nome,
+        //         email
+        //     FROM users
+        //     WHERE id = ?
+        //     `,
+        //     [payload.id]
+        // );
 
-        if (rows.length === 0) {
+        // if (rows.length === 0) {
 
-            res.clearCookie('token');
+        //     res.clearCookie('token');
 
-            return res.redirect('/auth/login');
+        //     return res.redirect('/auth/login');
 
-        }
+        // }
 
-        const user = rows[0];
-
-        req.user = user;
-
-        const [devices] = await db.execute(
-            `
-            SELECT
-                *
-            FROM devices
-            WHERE user_id = ?
-            `,
-            [user.id]
-        );
-
-        console.log(devices);
-
-        const [alerts] = await db.execute(
-            `
-            SELECT
-                *
-            FROM alerts
-            WHERE user_id = ?
-            `,
-            [user.id]
-        );
-
-        console.log(alerts);
+        // const user = rows[0];
+        
+        const user = await User.findById(payload.id);
 
         req.user = user;
-        req.devices = devices;
-        req.alerts = alerts;
+
+        // const [devices] = await db.execute(
+        //     `
+        //     SELECT
+        //         *
+        //     FROM devices
+        //     WHERE user_id = ?
+        //     `,
+        //     [user.id]
+        // );
+
+        // const devices = await Device.findByUser(user.id);
+
+        // console.log(devices);
+
+        // const [alerts] = await db.execute(
+        //     `
+        //     SELECT
+        //         *
+        //     FROM alerts
+        //     WHERE user_id = ?
+        //     `,
+        //     [user.id]
+        // );
+        // const alerts = await Alert.findByUser(user.id);
+
+        // console.log(alerts);
+
+        req.user = user;
+        // req.devices = devices;
+        // req.alerts = alerts;
 
         res.locals.user = user;
-        res.locals.devices = devices;
-        res.locals.alerts = alerts;
+        // res.locals.devices = devices;
+        // res.locals.alerts = alerts;
 
         next();
 

@@ -79,7 +79,7 @@ CREATE TABLE monitored_users (
         ON DELETE CASCADE
 );
 
-CREATE TABLE alerts (
+CREATE TABLE events (
     id INT AUTO_INCREMENT PRIMARY KEY,
 
     user_id INT NOT NULL,
@@ -109,27 +109,27 @@ CREATE TABLE alerts (
         REFERENCES devices(id)
 );
 
-CREATE TABLE falls (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+-- CREATE TABLE falls (
+--     id INT AUTO_INCREMENT PRIMARY KEY,
 
-    user_id INT NOT NULL,
-    device_id INT NOT NULL,
+--     user_id INT NOT NULL,
+--     device_id INT NOT NULL,
 
-    detected_at DATETIME NOT NULL,
+--     detected_at DATETIME NOT NULL,
 
-    latitude DECIMAL(10,8),
-    longitude DECIMAL(11,8),
+--     latitude DECIMAL(10,8),
+--     longitude DECIMAL(11,8),
 
-    confirmed BOOLEAN DEFAULT TRUE,
+--     confirmed BOOLEAN DEFAULT TRUE,
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (user_id)
-        REFERENCES users(id),
+--     FOREIGN KEY (user_id)
+--         REFERENCES users(id),
 
-    FOREIGN KEY (device_id)
-        REFERENCES devices(id)
-);
+--     FOREIGN KEY (device_id)
+--         REFERENCES devices(id)
+-- );
 
 CREATE TABLE device_logs (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,

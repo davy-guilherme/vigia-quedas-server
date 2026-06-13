@@ -39,32 +39,32 @@ async function handleFall(topic, payload) {
         const device = devices[0];
 
         // Registra a queda
-        const [fallResult] = await db.execute(
-            `
-            INSERT INTO falls (
-                user_id,
-                device_id,
-                detected_at,
-                latitude,
-                longitude,
-                confirmed
-            )
-            VALUES (?, ?, ?, ?, ?, ?)
-            `,
-            [
-                device.user_id,
-                device.id,
-                new Date(payload.timestamp),
-                payload.latitude || null,
-                payload.longitude || null,
-                false
-            ]
-        );
+        // const [fallResult] = await db.execute(
+        //     `
+        //     INSERT INTO falls (
+        //         user_id,
+        //         device_id,
+        //         detected_at,
+        //         latitude,
+        //         longitude,
+        //         confirmed
+        //     )
+        //     VALUES (?, ?, ?, ?, ?, ?)
+        //     `,
+        //     [
+        //         device.user_id,
+        //         device.id,
+        //         new Date(payload.timestamp),
+        //         payload.latitude || null,
+        //         payload.longitude || null,
+        //         false
+        //     ]
+        // );
 
-        // Cria alerta relacionado à queda
-        await db.execute(
+        // Cria evento relacionado à queda
+        const [eventResult] = await db.execute(
             `
-            INSERT INTO alerts (
+            INSERT INTO events (
                 user_id,
                 device_id,
                 tipo,
@@ -83,7 +83,7 @@ async function handleFall(topic, payload) {
         );
 
         console.log(
-            `Queda registrada com sucesso (Fall ID ${fallResult.insertId})`
+            `Queda registrada com sucesso (Fall ID ${eventResult.insertId})`
         );
 
     } catch (err) {
