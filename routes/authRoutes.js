@@ -53,7 +53,7 @@ router.post("/login", async (req, res) => {
         if (rows.length === 0) {
 
             return res.status(401).json({
-                erro: "Credenciais inválidas."
+                erro: "Credenciais inválidas - 1."
             });
 
         }
@@ -68,10 +68,16 @@ router.post("/login", async (req, res) => {
 
         const senhaValida = senha === usuario.senha_hash;
 
+        // console.log("Senha recebida:", senha);
+        // console.log("Senha banco:", usuario.senha_hash);
+        // console.log("Tipo recebida:", typeof senha);
+        // console.log("Tipo banco:", typeof usuario.senha_hash);
+        // console.log("Senha válida?", senhaValida);
+
         if (!senhaValida) {
 
             return res.status(401).json({
-                erro: "Credenciais inválidas."
+                erro: "Credenciais inválidas. - 2"
             });
 
         }
@@ -82,6 +88,7 @@ router.post("/login", async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: "1h" }
         );
+        console.log("Token gerado");
 
         res.cookie("token", token, {
             httpOnly: true,
@@ -89,6 +96,7 @@ router.post("/login", async (req, res) => {
             sameSite: "lax",
             maxAge: 1000 * 60 * 60 // 1 hora
         }).json({ msg: "Login realizado!" });
+        console.log("Cookie criado");
 
     } catch (err) {
 

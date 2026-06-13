@@ -24,6 +24,7 @@ function initMQTT () {
             const payload = JSON.parse(message.toString());
 
             if (topic.includes('/fall')) {
+                console.log('fall mqtt');
                 await handleFall(topic, payload);
             }
 

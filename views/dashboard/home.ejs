@@ -111,12 +111,9 @@
 
     <!-- Conteúdo -->
     <main class="main-content">
-
         <!-- Topbar -->
         <div class="topbar d-flex justify-content-between align-items-center flex-wrap gap-3">
-
             <div>
-
                 <h2 class="fw-bold mb-1">
                     Dashboard
                 </h2>
@@ -124,170 +121,99 @@
                 <p class="text-muted mb-0">
                     Bem-vindo ao painel do Vigia Quedas
                 </p>
-
             </div>
 
             <div class="text-end">
-
                 <div class="fw-semibold">
-                    Olá, Usuário
+                    Olá, <%= user.nome %>
                 </div>
 
                 <small class="text-muted">
                     Monitoramento em tempo real
                 </small>
-
             </div>
-
         </div>
 
         <!-- Cards -->
         <div class="row g-4 mb-4">
-
             <div class="col-lg-3 col-md-6">
-
                 <div class="card dashboard-card shadow-sm">
-
                     <div class="card-body">
-
                         <div class="d-flex justify-content-between align-items-center">
-
                             <div>
-
                                 <p class="text-muted mb-2">
                                     Dispositivos
                                 </p>
 
                                 <h3 class="fw-bold">
-                                    12
+                                    <%= devices.length || 0 %>
                                 </h3>
-
                             </div>
-
                             <div class="card-icon bg-blue">
                                 <i class="bi bi-cpu"></i>
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
 
             <div class="col-lg-3 col-md-6">
-
                 <div class="card dashboard-card shadow-sm">
-
                     <div class="card-body">
-
                         <div class="d-flex justify-content-between align-items-center">
-
                             <div>
-
-                                <p class="text-muted mb-2">
-                                    Online
-                                </p>
-
-                                <h3 class="fw-bold">
-                                    10
-                                </h3>
-
+                                <p class="text-muted mb-2">Online</p>
+                                <h3 class="fw-bold"><%= devices.length || 0 %></h3>
                             </div>
-
                             <div class="card-icon bg-green">
                                 <i class="bi bi-wifi"></i>
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
 
             <div class="col-lg-3 col-md-6">
-
                 <div class="card dashboard-card shadow-sm">
-
                     <div class="card-body">
-
                         <div class="d-flex justify-content-between align-items-center">
-
                             <div>
-
-                                <p class="text-muted mb-2">
-                                    Alertas
-                                </p>
-
-                                <h3 class="fw-bold">
-                                    3
-                                </h3>
-
+                                <p class="text-muted mb-2">Alertas</p>
+                                <h3 class="fw-bold"><%= alerts.length %></h3>
                             </div>
-
                             <div class="card-icon bg-red">
                                 <i class="bi bi-exclamation-triangle"></i>
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
 
             <div class="col-lg-3 col-md-6">
-
                 <div class="card dashboard-card shadow-sm">
-
                     <div class="card-body">
-
                         <div class="d-flex justify-content-between align-items-center">
-
                             <div>
-
-                                <p class="text-muted mb-2">
-                                    Contatos
-                                </p>
-
-                                <h3 class="fw-bold">
-                                    7
-                                </h3>
-
+                                <p class="text-muted mb-2">Contatos</p>
+                                <h3 class="fw-bold">0</h3>
                             </div>
-
                             <div class="card-icon bg-dark-custom">
                                 <i class="bi bi-people"></i>
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </div>
 
         <!-- Tabelas -->
         <div class="row g-4">
-
             <!-- Meus Dispositivos -->
             <div class="col-12">
-
                 <div class="card table-card shadow-sm">
-
                     <div class="card-body p-4">
-
                         <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-
                             <div>
-
                                 <h4 class="fw-bold mb-1">
                                     Meus Dispositivos
                                 </h4>
@@ -295,7 +221,6 @@
                                 <p class="text-muted mb-0">
                                     Dispositivos vinculados à sua conta
                                 </p>
-
                             </div>
 
                             <button class="btn btn-primary">
@@ -304,17 +229,12 @@
                                 Novo Dispositivo
 
                             </button>
-
                         </div>
 
                         <div class="table-responsive">
-
                             <table class="table align-middle">
-
                                 <thead>
-
                                     <tr>
-
                                         <th>
                                             Dispositivo
                                         </th>
@@ -324,91 +244,43 @@
                                         </th>
 
                                         <th>
-                                            Última Comunicação
-                                        </th>
-
-                                        <th>
                                             Bateria
                                         </th>
 
                                         <th>
                                             Ações
                                         </th>
-
                                     </tr>
-
                                 </thead>
 
                                 <tbody>
-
+                                    <% devices.forEach(device => { %>
                                     <tr>
-
                                         <td>
-                                            ESP32-001
+                                            <%= device.nome %>
                                         </td>
 
                                         <td>
                                             <span class="status-online"></span>
                                             Online
+                                        </td>               
+
+                                        <td>
+                                            <%= device.battery_level %>
                                         </td>
 
                                         <td>
-                                            Agora mesmo
-                                        </td>
-
-                                        <td>
-                                            87%
-                                        </td>
-
-                                        <td>
-
                                             <button class="btn btn-sm btn-outline-primary">
                                                 Ver
                                             </button>
-
                                         </td>
-
                                     </tr>
-
-                                    <tr>
-
-                                        <td>
-                                            ESP32-002
-                                        </td>
-
-                                        <td>
-                                            <span class="status-offline"></span>
-                                            Offline
-                                        </td>
-
-                                        <td>
-                                            Há 35 minutos
-                                        </td>
-
-                                        <td>
-                                            15%
-                                        </td>
-
-                                        <td>
-
-                                            <button class="btn btn-sm btn-outline-primary">
-                                                Ver
-                                            </button>
-
-                                        </td>
-
-                                    </tr>
-
+                                    <% }) %>
                                 </tbody>
-
                             </table>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
 
             <!-- Pessoas Monitoradas -->

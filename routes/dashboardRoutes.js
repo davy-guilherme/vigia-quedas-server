@@ -6,18 +6,20 @@ const router = express.Router();
 
 router.get("/", authenticateJWT, (req, res) => {
     res.render('dashboard/home', {
-
+        // user: req.user
     });
 });
 
 router.get("/devices", authenticateJWT, (req, res) => {
     res.render('device/home', {
-        
+        // user: req.user
     })
 });
 
-// router.get("/events", authenticateJWT, (req, res) => {
-//     res.sendFile(path.join(__dirname, '../views/events/home.html'));
-// });
+router.get("/events", authenticateJWT, (req, res) => {
+    res.render('events/home', {
+
+    })
+});
 
 module.exports = router;
