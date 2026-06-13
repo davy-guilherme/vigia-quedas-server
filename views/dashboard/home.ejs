@@ -163,7 +163,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <p class="text-muted mb-2">Online</p>
-                                <h3 class="fw-bold"><%= devices.length || 0 %></h3>
+                                <h3 class="fw-bold" id="onlineCounter"><%= devices.filter(d => d.status === 'online').length %></h3>
                             </div>
                             <div class="card-icon bg-green">
                                 <i class="bi bi-wifi"></i>
@@ -179,7 +179,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <p class="text-muted mb-2">Alertas</p>
-                                <h3 class="fw-bold"><%= events.length %></h3>
+                                <h3 class="fw-bold" id="fallCounter"><%= events.length || 0 %></h3>
                             </div>
                             <div class="card-icon bg-red">
                                 <i class="bi bi-exclamation-triangle"></i>
@@ -260,9 +260,9 @@
                                             <%= device.nome %>
                                         </td>
 
-                                        <td>
-                                            <span class="status-online"></span>
-                                            Online
+                                        <td class="device-status" data-device-id="<%= device.id %>">
+                                            <span class="<%= device.status === 'online' ? 'status-online' : 'status-offline' %>"></span>
+                                            <%= device.status %>
                                         </td>               
 
                                         <td>
@@ -494,6 +494,129 @@
 
     <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        // Injeta o ID direto do backend para o JS do front-end
+        const currentUserId = "<%= user.id %>"; // Ajuste para a sua variável do EJS (ex: user._id, userId, etc.)
+
+        socket.on('connect', () => {
+            console.log('Socket conectado');
+            
+            if (currentUserId) {
+                console.log('Enviando join-user para o id:', currentUserId);
+                socket.emit('join-user', currentUserId);
+            } else {
+                console.error('Erro: currentUserId não foi encontrado no EJS');
+            }
+        });
+
+        socket.on('new-event', (event) => {
+            console.log(event);
+
+            const timeline = document.getElementById('eventsTimeline');
+            const counter = document.getElementById('fallCounter');
+
+            counter.textContent = Number(counter.textContent) + 1;
+
+            const html = `
+                <div class="timeline-item">
+
+                    <div class="timeline-dot bg-danger"></div>
+
+                    <div class="timeline-content">
+
+                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
+
+                            <div>
+
+                                <h5 class="fw-bold text-danger mb-1">
+                                    Queda Detectada
+                                </h5>
+
+                                <p class="text-muted mb-0">
+                                    Dispositivo ${event.device_id}
+                                </p>
+
+                            </div>
+
+                            <span class="badge bg-danger">
+                                Crítico
+                            </span>
+
+                        </div>
+
+                        <p class="mb-3">
+                            ${event.descricao}
+                        </p>
+
+                    </div>
+
+                </div>
+            `;
+
+            timeline.insertAdjacentHTML(
+                'afterbegin',
+                html
+            );
+        });
+
+        // socket.on('device-status-changed', (data) => {
+
+        //     const cell = document.querySelector(
+        //         `[data-device-id="${data.deviceId}"]`
+        //     );
+
+        //     if (!cell) {
+        //         return;
+        //     }
+
+        //     const statusClass = data.status === 'online' ? 'status-online' : 'status-offline';
+
+        //     cell.innerHTML = `
+        //         <span class="${statusClass}"></span>
+        //         ${data.status}
+        //     `;
+        // });
+
+        // ATUALIZADO: Gerencia a alteração de status e recalcula o card do topo
+        socket.on('device-status-changed', (data) => {
+
+            // 1. Encontra a célula do dispositivo alvo
+            const cell = document.querySelector(`[data-device-id="${data.deviceId}"]`);
+
+            if (!cell) {
+                return;
+            }
+
+            // 2. Atualiza visualmente o status dele na tabela externa
+            const statusClass = data.status === 'online' ? 'status-online' : 'status-offline';
+
+            cell.innerHTML = `
+                <span class="${statusClass}"></span>
+                ${data.status}
+            `;
+
+            // 3. Recala a contagem total de dispositivos online na tela
+            const onlineCounter = document.getElementById('onlineCounter');
+            if (onlineCounter) {
+                // Busca todas as células de status da tabela de dispositivos
+                const allStatusCells = document.querySelectorAll('.device-status');
+                let totalOnline = 0;
+
+                // Conta quantas células contém a palavra 'online' após a alteração
+                allStatusCells.forEach(c => {
+                    if (c.textContent.trim().toLowerCase() === 'online') {
+                        totalOnline++;
+                    }
+                });
+
+                // Altera o número no card superior do topo
+                onlineCounter.textContent = totalOnline;
+            }
+        });
+    </script>
 
 </body>
 </html>

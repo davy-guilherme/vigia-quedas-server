@@ -1,13 +1,33 @@
 const Device = require('../models/Device');
+const { getIO } = require('./socket');
 
 function startDeviceMonitor() {
 
     setInterval(
         async () => {
-
+            console.log("Varrendo dispositivos")
             try {
 
-                await Device.markOfflineDevices();
+                const offlineDevices = await Device.markOfflineDevices();
+
+                const io = getIO();
+
+                for (const device of offlineDevices) {
+
+
+                    console.log('Emitindo device-status-changed', {
+                        deviceId: device.id,
+                        status: 'offline'
+                    });
+
+                    io.to(`user-${device.user_id}`).emit(
+                        'device-status-changed',
+                        {
+                            deviceId: device.id,
+                            status: 'offline'
+                        }
+                    );
+                }
 
             } catch (err) {
 

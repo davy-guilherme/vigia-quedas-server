@@ -48,21 +48,25 @@ class Event {
 
     static async create(data) {
 
+        console.log('Event create: ');
+        console.log(data);
         const [result] = await db.execute(
             `
             INSERT INTO events (
                 user_id,
                 device_id,
-                type,
-                message
+                tipo,
+                descricao,
+                status
             )
-            VALUES (?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?)
             `,
             [
                 data.user_id,
                 data.device_id,
-                data.type,
-                data.message
+                data.tipo,
+                data.descricao,
+                data.status || 'pending'
             ]
         );
 

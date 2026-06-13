@@ -7,10 +7,20 @@ const dashRoutes = require("./routes/dashboardRoutes");
 const cookieParser = require('cookie-parser');
 const mqttService = require('./mqtt/mqttService');
 const os = require('os');
+const socket = require('./services/socket');
 
 const db = require('./database/connection');
 
+const http = require('http');
+const { Server } = require('socket.io');
+
 const app = express();
+
+const server = http.createServer(app);
+
+const io = new Server(server);
+
+socket.initialize(io);
 
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -67,8 +77,11 @@ for (const interfaceName in interfaces) {
 
 }
 
-app.listen(3000, () => {
-    console.log('Server is running on https://localhost:3000');
+// app.listen(3000, () => {
+//     console.log('Server is running on https://localhost:3000');
+// });
+server.listen(3000, () => {
+    console.log('Server is running on http://localhost:3000');
 });
 
 async function testDatabase() {

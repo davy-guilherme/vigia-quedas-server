@@ -1,4 +1,7 @@
+const Device = require('../../models/Device');
+const Event = require('../../models/Event');
 const db = require('../../database/connection');
+const { getIO } = require('../../services/socket');
 
 async function handleFall(topic, payload) {
 
@@ -16,74 +19,44 @@ async function handleFall(topic, payload) {
     try {
 
         // Busca o dispositivo
-        const [devices] = await db.execute(
-            `
-            SELECT
-                d.id,
-                d.user_id,
-                d.nome
-            FROM devices d
-            WHERE d.serial_number = ?
-            `,
-            [serialNumber]
-        );
+        const device =
+            await Device.findBySerial(
+                serialNumber
+            );
 
-        if (devices.length === 0) {
+        if (!device) {
 
-            console.log('Dispositivo não encontrado');
+            console.log(
+                'Dispositivo não encontrado'
+            );
 
             return;
-
         }
 
-        const device = devices[0];
+        const eventId =
+            await Event.create({
+                user_id: device.user_id,
+                device_id: device.id,
+                tipo: 'fall_detected',
+                descricao: `Queda detectada pelo dispositivo ${device.nome}`
+            });
 
-        // Registra a queda
-        // const [fallResult] = await db.execute(
-        //     `
-        //     INSERT INTO falls (
-        //         user_id,
-        //         device_id,
-        //         detected_at,
-        //         latitude,
-        //         longitude,
-        //         confirmed
-        //     )
-        //     VALUES (?, ?, ?, ?, ?, ?)
-        //     `,
-        //     [
-        //         device.user_id,
-        //         device.id,
-        //         new Date(payload.timestamp),
-        //         payload.latitude || null,
-        //         payload.longitude || null,
-        //         false
-        //     ]
-        // );
-
-        // Cria evento relacionado à queda
-        const [eventResult] = await db.execute(
-            `
-            INSERT INTO events (
-                user_id,
-                device_id,
-                tipo,
-                descricao,
-                status
-            )
-            VALUES (?, ?, ?, ?, ?)
-            `,
-            [
-                device.user_id,
-                device.id,
-                'fall_detected',
-                `Queda detectada pelo dispositivo ${device.nome}`,
-                'pending'
-            ]
-        );
+        const event =
+            await Event.findById(eventId);
 
         console.log(
-            `Queda registrada com sucesso (Fall ID ${eventResult.insertId})`
+            `Evento (queda) criado: ${eventId}`
+        );
+
+        const io = getIO();
+
+        // Em vez de io.emit (que envia para TODO MUNDO), 
+        // usamos io.to(`user-${id}`) para enviar apenas para a sala do usuário específico.
+        const roomName = `user-${device.user_id}`;
+        
+        io.to(roomName).emit(
+            'new-event',
+            event
         );
 
     } catch (err) {
