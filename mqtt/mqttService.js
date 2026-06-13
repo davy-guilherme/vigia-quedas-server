@@ -1,7 +1,9 @@
 const mqtt = require('mqtt');
 const dotenv = require('dotenv').config();
+const Device = require('../models/Device');
 
 const { handleFall } = require('./handlers/fallHandler');
+const { handleHeartbeat } = require('./handlers/heartbeatHandler');
 
 function initMQTT () {
     console.log(process.env.MQTT_HOST);
@@ -12,7 +14,9 @@ function initMQTT () {
     client.on('connect', () => {
         console.log('MQTT conectado');
         client.subscribe('vigiaquedas/device/+/fall');
-        console.log('Subscrito no tópico: vigiaquedas/device/+/fall')
+        client.subscribe('vigiaquedas/device/+/heartbeat');
+        console.log('Subscrito no tópico: vigiaquedas/device/+/fall');
+        console.log('Subscrito no tópico: vigiaquedas/device/+/heartbeat');
     });
 
     client.on('message', async (topic, message) => {
@@ -26,6 +30,14 @@ function initMQTT () {
             if (topic.includes('/fall')) {
                 console.log('fall mqtt');
                 await handleFall(topic, payload);
+            } else if (
+                topic.includes('/heartbeat')
+            ) {
+
+                await handleHeartbeat(
+                    topic,
+                    payload
+                );
             }
 
         } catch (err) {

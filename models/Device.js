@@ -45,6 +45,42 @@ class Device {
         return rows[0] || null;
     }
 
+    static async updateLastSeen(
+        serialNumber
+    ) {
+
+        await db.execute(
+            `
+            UPDATE devices
+            SET
+                status = 'online',
+                last_seen = NOW()
+            WHERE serial_number = ?
+            `,
+            [serialNumber]
+        );
+    }
+
+    static async markOfflineDevices() {
+
+        console.log("varrendo dispositivos offline");
+
+        await db.execute(
+            `
+            UPDATE devices
+            SET status = 'offline'
+            WHERE
+                status = 'online'
+                AND last_seen <
+                    DATE_SUB(
+                        NOW(),
+                        INTERVAL 2 MINUTE
+                    )
+            `
+        );
+
+    }
+
 }
 
 module.exports = Device;

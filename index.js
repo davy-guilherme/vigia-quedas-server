@@ -15,6 +15,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+const { startDeviceMonitor } = require('./services/deviceMonitor');
+
 app.use((req, res, next) => {
     res.locals.currentUrl = req.path;
     next();
@@ -35,6 +37,9 @@ app.set("view engine", "ejs");
 
 // Inicia MQTT
 mqttService.initMQTT();
+
+// inicia varredura de dispositivos offline
+startDeviceMonitor();
 
 
 // app.get('/', (req, res) => {
