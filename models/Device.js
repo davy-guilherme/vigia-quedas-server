@@ -84,6 +84,28 @@ class Device {
         return devices;
     }
 
+    static async findMyAndMonitoredDevices(userId) {
+        const [rows] = await db.execute(
+            `
+            SELECT 
+                d.*,
+                u.nome AS dono_nome
+            FROM devices d
+            INNER JOIN users u ON d.user_id = u.id
+            WHERE d.user_id = ? 
+               OR d.user_id IN (
+                   SELECT user_id 
+                   FROM emergency_contacts 
+                   WHERE contact_user_id = ? AND status = 'active'
+               )
+            ORDER BY d.created_at DESC
+            `,
+            [userId, userId]
+        );
+
+        return rows;
+    }
+
 }
 
 module.exports = Device;

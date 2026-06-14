@@ -37,14 +37,16 @@ CREATE TABLE devices (
 CREATE TABLE emergency_contacts (
     id INT AUTO_INCREMENT PRIMARY KEY,
 
+    -- Quem está adicionando o contato (o usuário monitorado)
     user_id INT NOT NULL,
 
-    nome VARCHAR(100) NOT NULL,
-    telefone VARCHAR(30) NOT NULL,
-    email VARCHAR(150),
+    -- O contato de emergência (que OBRIGATORIAMENTE precisa ser um usuário cadastrado)
+    contact_user_id INT NOT NULL,
 
+    -- Grau de parentesco/proximidade (Ex: 'Filho', 'Esposa', 'Vizinho')
     relacao VARCHAR(50),
 
+    -- Status do convite/vínculo
     status ENUM(
         'pending',
         'active'
@@ -52,32 +54,40 @@ CREATE TABLE emergency_contacts (
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
+    -- Garante que o mesmo usuário não adicione o mesmo contato duas vezes
+    UNIQUE (user_id, contact_user_id),
+
+    -- Chaves Estrangeiras
     FOREIGN KEY (user_id)
-        REFERENCES users(id)
-        ON DELETE CASCADE
-);
-
-CREATE TABLE monitored_users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-
-    monitored_user_id INT NOT NULL,
-    emergency_contact_user_id INT NOT NULL,
-
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    UNIQUE (
-        monitored_user_id,
-        emergency_contact_user_id
-    ),
-
-    FOREIGN KEY (monitored_user_id)
         REFERENCES users(id)
         ON DELETE CASCADE,
 
-    FOREIGN KEY (emergency_contact_user_id)
+    FOREIGN KEY (contact_user_id)
         REFERENCES users(id)
         ON DELETE CASCADE
 );
+
+-- CREATE TABLE monitored_users (
+--     id INT AUTO_INCREMENT PRIMARY KEY,
+
+--     monitored_user_id INT NOT NULL,
+--     emergency_contact_user_id INT NOT NULL,
+
+--     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+--     UNIQUE (
+--         monitored_user_id,
+--         emergency_contact_user_id
+--     ),
+
+--     FOREIGN KEY (monitored_user_id)
+--         REFERENCES users(id)
+--         ON DELETE CASCADE,
+
+--     FOREIGN KEY (emergency_contact_user_id)
+--         REFERENCES users(id)
+--         ON DELETE CASCADE
+-- );
 
 CREATE TABLE events (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -150,22 +160,30 @@ CREATE TABLE device_logs (
 
 /* CREATE DATA */
 
--- Cria usuário
-INSERT INTO users (
-    nome,
-    email,
-    senha_hash
-)
-VALUES (
-    'Davy Batista',
-    'davy@email.com',
-    '123456'
-);
+-- ==========================================
+-- CRIAÇÃO DOS USUÁRIOS
+-- ==========================================
 
--- Guarda o ID gerado
-SET @user_id = LAST_INSERT_ID();
+-- Usuário 1: O Usuário Monitorado (Davy)
+INSERT INTO users (nome, email, senha_hash)
+VALUES ('Davy Batista', 'davy@email.com', '123456');
+SET @user_monitorado_id = LAST_INSERT_ID();
 
--- Cria dispositivo vinculado ao usuário
+-- Usuário 2: Primeiro Contato de Emergência (Carlos)
+INSERT INTO users (nome, email, senha_hash)
+VALUES ('Eder', 'eder@email.com', '123456');
+SET @contato_1_id = LAST_INSERT_ID();
+
+-- Usuário 3: Segundo Contato de Emergência (Ana)
+INSERT INTO users (nome, email, senha_hash)
+VALUES ('Henrique', 'henrique@email.com', '123456');
+SET @contato_2_id = LAST_INSERT_ID();
+
+
+-- ==========================================
+-- CRIAÇÃO DO DISPOSITIVO (Apenas para o Usuário 1)
+-- ==========================================
+
 INSERT INTO devices (
     user_id,
     nome,
@@ -175,10 +193,23 @@ INSERT INTO devices (
     last_seen
 )
 VALUES (
-    @user_id,
+    @user_monitorado_id, -- Vinculado apenas ao Davy
     'ESP32 Principal',
     'ESP32-001',
     95,
-    'online',
+    'offline',
     NOW()
 );
+
+
+-- ==========================================
+-- VÍNCULOS DE EMERGÊNCIA
+-- ==========================================
+
+-- Vincula o Carlos como contato de emergência do Davy (Relação: Filho)
+INSERT INTO emergency_contacts (user_id, contact_user_id, relacao, status)
+VALUES (@user_monitorado_id, @contato_1_id, 'Amigo', 'active');
+
+-- Vincula a Ana como contato de emergência do Davy (Relação: Vizinho)
+INSERT INTO emergency_contacts (user_id, contact_user_id, relacao, status)
+VALUES (@user_monitorado_id, @contato_2_id, 'Amigo', 'active');

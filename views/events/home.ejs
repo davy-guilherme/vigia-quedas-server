@@ -231,7 +231,7 @@
                 <i class="bi bi-funnel"></i> Filtrar Alertas
             </button>
 
-            <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+            <!-- <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content" style="border-radius: 20px;">
                         <div class="modal-header border-0 pb-0">
@@ -248,6 +248,59 @@
                                             <% devices.forEach(dev => { %>
                                                 <option value="<%= dev.id %>" <%= typeof filters !== 'undefined' && filters.device_id == dev.id ? 'selected' : '' %>>
                                                     <%= dev.serial_number %> <%= dev.description ? `(${dev.description})` : '' %>
+                                                </option>
+                                            <% }); %>
+                                        <% } %>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label text-muted fw-semibold small">Tipo de Alerta</label>
+                                    <select class="form-select border-0 bg-light p-3" name="tipo" style="border-radius: 12px;">
+                                        <option value="">Todos os Tipos</option>
+                                        <option value="fall_detected" <%= typeof filters !== 'undefined' && filters.tipo === 'fall_detected' ? 'selected' : '' %>>Queda Detectada (Offline)</option>
+                                        <option value="fall_confirmed" <%= typeof filters !== 'undefined' && filters.tipo === 'fall_confirmed' ? 'selected' : '' %>>Queda Confirmada (Tempo Real)</option>
+                                        <option value="device_offline" <%= typeof filters !== 'undefined' && filters.tipo === 'device_offline' ? 'selected' : '' %>>Dispositivo Offline</option>
+                                        <option value="low_battery" <%= typeof filters !== 'undefined' && filters.tipo === 'low_battery' ? 'selected' : '' %>>Bateria Baixa</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label text-muted fw-semibold small">Status do Alerta</label>
+                                    <select class="form-select border-0 bg-light p-3" name="status" style="border-radius: 12px;">
+                                        <option value="">Todos os Status</option>
+                                        <option value="pending" <%= typeof filters !== 'undefined' && filters.status === 'pending' ? 'selected' : '' %>>Pendente</option>
+                                        <option value="notified" <%= typeof filters !== 'undefined' && filters.status === 'notified' ? 'selected' : '' %>>Notificado</option>
+                                        <option value="resolved" <%= typeof filters !== 'undefined' && filters.status === 'resolved' ? 'selected' : '' %>>Resolvido</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer border-0 pt-0 gap-2">
+                                <a href="/dashboard/events" class="btn btn-light flex-fill p-2" style="border-radius: 12px;">Limpar</a>
+                                <button type="submit" class="btn btn-primary flex-fill p-2" style="border-radius: 12px;">Aplicar Filtros</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div> -->
+            <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content" style="border-radius: 20px;">
+                        <div class="modal-header border-0 pb-0">
+                            <h5 class="modal-title fw-bold" id="filterModalLabel">Filtrar Histórico</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form id="filterForm" action="/dashboard/events" method="GET"> 
+                            <div class="modal-body py-4">
+                                
+                                <div class="mb-3">
+                                    <label class="form-label text-muted fw-semibold small">Dispositivo</label>
+                                    <select class="form-select border-0 bg-light p-3" name="device_id" style="border-radius: 12px;">
+                                        <option value="">Todos os Dispositivos</option>
+                                        <% if (typeof devices !== 'undefined' && devices.length > 0) { %>
+                                            <% devices.forEach(dev => { %>
+                                                <option value="<%= dev.id %>" <%= typeof filters !== 'undefined' && filters.device_id == dev.id ? 'selected' : '' %>>
+                                                    <%= dev.nome %> (<%= dev.serial_number %>) - [<%= String(dev.user_id) === String(user.id) ? 'Meu Dispositivo' : 'Monitorado: ' + (dev.dono_nome || 'Usuário') %>]
                                                 </option>
                                             <% }); %>
                                         <% } %>
@@ -375,7 +428,7 @@
 
         </div>
 
-        <!-- Timeline NOVA -->
+        <!-- Timeline -->
         <div class="timeline" id="eventsTimeline">
             <!-- Evento -->
             <% events.forEach(event => { %>
@@ -384,8 +437,8 @@
                     <div class="timeline-content">
                         <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
                             <div>
-                                <h5 class="fw-bold text-danger mb-1">Queda Detectada</h5>
-                                <p class="text-muted mb-0">[User name] - <%= event.device_id%></p>
+                                <h5 class="fw-bold text-danger mb-1"><%= event.tipo %></h5>
+                                <p class="text-muted mb-0"><%= event.user_id === user.id ? 'Meu Perfil' : event.usuario_nome %> - <%= event.device_id%></p>
                             </div>
 
                             <span class="badge bg-danger">
@@ -406,7 +459,7 @@
                                 <i class="bi bi-check2"></i> Marcar Resolvido
                             </button>
                         </div>
-                        <small class="text-muted d-block mt-3">Hoje às 14:32</small>
+                        <small class="text-muted d-block mt-3"><%= event.created_at %></small>
                     </div>
                 </div>
                 <% }) %>

@@ -112,7 +112,7 @@
         <% if (devices && devices.length > 0) { %>
             <% devices.forEach(device => { %>
                 
-                <div class="col-lg-4 col-md-6 mb-4">
+                <!-- <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card device-card shadow-sm h-100">
                         <div class="card-body p-4">
                             <div class="d-flex justify-content-between align-items-start mb-4">
@@ -160,6 +160,75 @@
                                 <a href="/dashboard/device/<%= device.id %>/edit" class="btn btn-outline-secondary">
                                     <i class="bi bi-gear"></i>
                                 </a>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card device-card shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-start mb-4">
+                                <div class="device-icon">
+                                    <i class="bi bi-cpu"></i>
+                                </div>
+                                
+                                <span class="badge <%= device.status === 'online' ? 'bg-success' : 'bg-danger' %> status-badge" data-device-id="<%= device.id %>">
+                                    <%= device.status === 'online' ? 'Online' : 'Offline' %>
+                                </span>
+                            </div>
+
+                            <h4 class="fw-bold text-uppercase mb-1">
+                                <%= device.serial_number %>
+                            </h4>
+
+                            <div class="mb-3">
+                                <% if (device.user_id === user.id) { %>
+                                    <span class="badge bg-light text-dark border">
+                                        <i class="bi bi-person-fill me-1"></i> Meu Dispositivo
+                                    </span>
+                                <% } else { %>
+                                    <span class="badge bg-info-subtle text-info border border-info-subtle">
+                                        <i class="bi bi-heart-pulse-fill me-1"></i> Monitorado: <%= device.dono_nome %>
+                                    </span>
+                                <% } %>
+                            </div>
+
+                            <p class="text-muted mb-4">
+                                <%= device.nome || 'Dispositivo cadastrado' %> </p>
+
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Bateria</span>
+                                    <span class="fw-semibold"><%= device.battery_level %>%</span> </div>
+                                <div class="battery-bar" style="background-color: #e9ecef; height: 8px; border-radius: 4px; overflow: hidden;">
+                                    <div
+                                        class="battery-level <%= device.battery_level > 20 ? 'bg-success' : 'bg-danger' %>"
+                                        style="width: <%= device.battery_level %>%; height: 100%;"
+                                    ></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <small class="text-muted">
+                                    Última comunicação: 
+                                    <%= device.last_seen || 'Nenhuma comunicação registrada' %> </small>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <a href="/dashboard/events?device_id=<%= device.id %>" class="btn btn-primary flex-fill">
+                                    <i class="bi bi-eye"></i> Detalhes
+                                </a>
+                                
+                                <% if (device.user_id === user.id) { %>
+                                    <a href="/dashboard/device/<%= device.id %>/edit" class="btn btn-outline-secondary">
+                                        <i class="bi bi-gear"></i>
+                                    </a>
+                                <% } else { %>
+                                    <button class="btn btn-outline-secondary" disabled title="Apenas leitura para monitorados">
+                                        <i class="bi bi-lock-fill"></i>
+                                    </button>
+                                <% } %>
                             </div>
                         </div>
                     </div>
