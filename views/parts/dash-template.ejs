@@ -120,10 +120,11 @@
 <!-- Sidebar Desktop -->
 <aside class="sidebar d-none d-lg-block">
 
-    <div class="sidebar-brand">
-
-        <i class="bi bi-shield-check"></i>
-        Vigia Quedas
+    <div class="sidebar-brand d-flex justify-content-center align-items-center w-100 mb-4">
+        <a class="navbar-brand fw-bold m-0 d-flex align-items-center gap-2" href="/">
+            <i class="bi bi-shield-check"></i>
+            Vigia Quedas
+        </a>
 
     </div>
 
@@ -144,6 +145,7 @@
             Alertas
         </a>
 
+        <!--
         <a href="#" class="sidebar-link">
             <i class="bi bi-people"></i>
             Contatos
@@ -158,6 +160,7 @@
             <i class="bi bi-house"></i>
             Página Inicial
         </a>
+        -->
 
         <form action="/auth/logout" method="POST">
             <button type="submit" class="sidebar-link border-0 bg-transparent w-100 text-start">
@@ -198,21 +201,22 @@
 
         <nav>
 
-            <a href="#" class="sidebar-link active">
+            <a href="/dashboard" class="sidebar-link <%= currentUrl === '/dashboard' ? 'active' : '' %>">
                 <i class="bi bi-speedometer2"></i>
                 Dashboard
             </a>
 
-            <a href="#" class="sidebar-link">
+            <a href="/dashboard/devices" class="sidebar-link <%= currentUrl === '/dashboard/devices' ? 'active' : '' %>">
                 <i class="bi bi-cpu"></i>
                 Dispositivos
             </a>
 
-            <a href="#" class="sidebar-link">
+            <a href="/dashboard/events" class="sidebar-link <%= currentUrl === '/dashboard/events' ? 'active' : '' %>">
                 <i class="bi bi-bell"></i>
                 Alertas
             </a>
 
+            <!--
             <a href="#" class="sidebar-link">
                 <i class="bi bi-people"></i>
                 Contatos
@@ -227,6 +231,7 @@
                 <i class="bi bi-house"></i>
                 Página Inicial
             </a>
+            -->
 
             <a href="/logout" class="sidebar-link">
                 <i class="bi bi-box-arrow-right"></i>

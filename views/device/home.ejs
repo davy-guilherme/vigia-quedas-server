@@ -246,6 +246,8 @@
 
     </main>
 
+    <%- include('../parts/dash-foot') %>
+
     <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -267,13 +269,9 @@
         });
 
         // Evento que escuta quando um dispositivo sofre uma queda
-        socket.on('new-event', (event) => {
-            console.log('Alerta de queda recebido via Socket:', event);
-            
-            // Como esta página é apenas a listagem de cards, você pode disparar um alerta visual
-            // ou redirecionar o usuário caso ache necessário. Exemplo de alerta na tela:
-            alert(`ATENÇÃO: Queda detectada no dispositivo ${event.device_id}!`);
-        });
+        // socket.on('new-event', (event) => {
+        //     console.log('Alerta de queda recebido via Socket:', event);
+        // });
 
         // CORRIGIDO: Gerencia a alteração de status online/offline diretamente nos Cards
         socket.on('device-status-changed', (data) => {
@@ -299,5 +297,6 @@
             }
         });
     </script>
+    <script src="/js/toast-notification.js" defer></script>
 </body>
 </html>
